@@ -1,0 +1,1116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js vr - panorama</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400&display=swap" rel="stylesheet">
+		<style>
+			*{
+				font-family: 'Noto Sans KR', sans-serif;
+			}
+			body{
+				margin: 0;
+				overflow: hidden;
+				
+			}
+
+			#if{
+				position:absolute;
+				width: 55%;
+				left: 340px;
+				top: 75px;
+			}
+
+			canvas{
+				float: right;
+			}
+
+			.p5Canvas{
+				position: absolute;
+				left: 0;
+				top: 0;
+			}
+			#VRButton{
+				display: none;
+			}
+			#zero{
+				display: none;
+			}
+			#intro1{
+				position: absolute;
+				width: 100vw;
+				height: 100vh;
+				background-color: #fff;
+				z-index: 998;
+				text-align: center;
+				
+			}
+			#intro2{
+				position: absolute;
+				width: 100vw;
+				height: 100vh;
+				background-color: #fff;
+				z-index: 999;
+				text-align: center;
+				
+			}
+			#t1{
+				font-size: 20px;
+			   font-weight: 400;
+			   color: #454545;
+			   margin-top: 300px;
+			   margin-bottom: 10px;
+			   
+			}
+			#t2{
+				font-size: 20px;
+			   font-weight: 400;
+			   color: #454545;
+			   margin-bottom: 10px;
+			   
+			}
+			#t3{
+				font-size: 20px;
+			   font-weight: 400;
+			   color: #454545;
+			   margin-bottom: 10px;
+			   
+			}
+			#t4{
+				font-size: 20px;
+			   font-weight: 400;
+			   color: #454545;
+			   margin-top: 350px;
+			   
+			}
+			.logo{
+				width:200px;
+				
+				position: absolute;
+				top: 30px;
+				left: 40px;
+
+			}
+			#intro{
+				position: absolute;
+				width: 100vw;
+				height: 100vh;
+				background-color: #fff;
+				z-index: 997;
+			}
+			#graph{
+				position: absolute;
+				width: 350px;
+				height: 180px;
+				background-color: #fff;
+				z-index: 99;
+				right: 10px;
+				top: 10px;
+			}
+			.bar{
+				height: 30px;
+				width: 1px;
+				background-color: #8ACFA3;
+				margin-bottom: 10px;
+			}
+			.bar2{
+				height: 30px;
+				width: 1px;
+				background-color: #F5D070;
+				margin-bottom: 10px;
+			}
+			.bar3{
+				height: 30px;
+				width: 1px;
+				background-color:#F6C3C1;
+				margin-bottom: 10px;
+			}
+			.bar4{
+				height: 30px;
+				width: 1px;
+				background-color: #7DB8E2;
+				margin-bottom: 10px;
+			}
+			.square{
+				margin-left: 110px;
+				margin-top: 20px;
+			}
+			.text{
+				margin-top: 10px;
+				margin-bottom: 10px;
+				position: absolute;
+				
+			}
+			#info{
+				text-align: center;
+				margin-top: 150px;
+			}
+			p{
+			   font-size: 28px;
+			   font-weight: bold;
+			   color: #4963C9;
+			   margin-bottom: 50px;
+			   
+			}
+			a{
+				font-weight:400;
+				color: #525252;
+				font-size: 20px;
+				
+			}
+			#btn_step0{
+				position: absolute;
+				width: 290px;
+				height: 220px;
+				left: 154px;
+				top: 400px;
+				background: #FFFFFF;
+				border: 1.5px solid #D9D9D9;
+				border-radius: 14px;
+			}
+			#btn_step0:hover{
+				
+				border: 2px solid #4964CA;
+				border-radius: 14px;
+				font-weight: bold;
+
+			}
+			#btn_step1:hover{
+				
+				border: 2px solid #4964CA;
+				border-radius: 14px;
+				font-weight: bold;
+
+			}
+			#btn_step2:hover{
+				
+				border: 2px solid #4964CA;
+				border-radius: 14px;
+				font-weight: bold;
+
+			}
+			#btn_step3:hover{
+				
+				border: 2px solid #4964CA;
+				border-radius: 14px;
+				font-weight: bold;
+
+			}
+			#btn_step1{
+				position: absolute;
+				width: 290px;
+				height: 220px;
+				left: 468px;
+				top: 400px;
+				background: #FFFFFF;
+				border:  1.5px solid #D9D9D9;
+				border-radius: 14px;
+			}
+			#btn_step2{
+				position: absolute;
+				width: 290px;
+				height: 220px;
+				left: 782px;
+				top: 400px;
+				background: #FFFFFF;
+				border:  1.5px solid #D9D9D9;
+				border-radius: 14px;
+			}
+			#btn_step3{
+				position: absolute;
+				width: 290px;
+				height: 220px;
+				left: 1096px;
+				top: 400px;
+				background: #FFFFFF;
+				border:  1.5px solid #D9D9D9;
+				border-radius: 14px;
+			}
+			.step{
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				padding: 10px 16px;
+				gap: 10px;
+
+				position: absolute;
+				width: 35px;
+				height: 15px;
+				left: 30px;
+				top: 40px;
+				color: #FF8F27;
+				background: #FFEEDA;
+				border-radius: 3px;
+			}
+			.step1{
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				padding: 10px 16px;
+				gap: 10px;
+
+				position: absolute;
+				width: 35px;
+				height: 15px;
+				left: 30px;
+				top: 40px;
+				color: #EB5A6E;
+				background: #F8E8EB;
+				border-radius: 3px;
+			}
+			.step2{
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				padding: 10px 16px;
+				gap: 10px;
+
+				position: absolute;
+				width: 35px;
+				height: 15px;
+				left: 30px;
+				top: 40px;
+				color: #4964CA;
+				background: #E2E5F5;
+				border-radius: 3px;
+			}
+			.step3{
+				display: flex;
+				flex-direction: row;
+				justify-content: center;
+				align-items: center;
+				padding: 10px 16px;
+				gap: 10px;
+
+				position: absolute;
+				width: 35px;
+				height: 15px;
+				left: 30px;
+				top: 40px;
+				color: #6DB9A9;
+				background: #D6EAE8;
+				border-radius: 3px;
+			}
+			h1{
+				font-weight: 400;
+				color: #454545;
+				font-size: 20px;
+				left: 30px;
+				top: 100px;
+				position: absolute;
+			}
+			h2{
+				font-weight: 100;
+				color:  #A0A0A0;
+				font-size: 16px;
+				left: 30px;
+				top: 140px;
+				position: absolute;
+			}
+			h3{
+				font-weight: 200;
+				color:  #5f5f5f;
+			}
+			/* #butt{
+				margin-top: 500px;
+			} */
+			#left{
+				box-sizing: border-box;
+
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				/* left: 1670px;
+				top: 890px; */
+
+				border: 3px solid #5068C8;
+				border-radius: 100px;
+				text-align: center;
+				font-size: 32px;
+				font-weight: bold;
+				color: #5068C8;
+				left: 160px;
+				bottom: 100px;
+				line-height: 50px;
+			}
+			
+			#right{
+				box-sizing: border-box;
+
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				/* left: 1670px;
+				top: 890px; */
+
+				border: 3px solid #5068C8;
+				border-radius: 100px;
+				text-align: center;
+				font-size: 32px;
+				font-weight: bold;
+				color: #5068C8;
+				right: 160px;
+				bottom: 100px;
+				line-height: 50px;
+			}
+			#right2{
+				box-sizing: border-box;
+
+				position: absolute;
+				width: 60px;
+				height: 60px;
+				/* left: 1670px;
+				top: 890px; */
+
+				border: 3px solid #5068C8;
+				border-radius: 100px;
+				text-align: center;
+				font-size: 32px;
+				font-weight: bold;
+				color: #5068C8;
+				right: 160px;
+				bottom: 100px;
+				line-height: 50px;
+			}
+			#left:hover{
+				background-color: #5068C8;
+				color: white;
+				border: 3px solid white;
+			}
+			
+			#right:hover{
+				background-color: #5068C8;
+				color: white;
+				border: 3px solid white;
+			}
+			#right2:hover{
+				background-color: #5068C8;
+				color: white;
+				border: 3px solid white;
+			}
+			.guidee{
+				font-size: 18px;
+				font-weight: 600;
+				color: #5068C8;
+				position: absolute;
+				z-index: 1000;
+				bottom: 80px;
+				left: 100px;
+				text-align: center;
+
+			}
+			.guidee2{
+				
+				color: #464646;
+				position: absolute;
+				z-index: 1000;
+				bottom: 60px;
+				right: 250px;
+				text-align: center;
+				
+				width: 600px;
+				height: 100px;
+				background-color: rgba(255, 255, 255, 0.5);
+				border-radius: 12px;
+				
+			}
+			h4{
+				font-size: 16px;
+				font-weight: 400;
+				color: #333333;
+				margin: 4px;
+				margin-top: 25px;
+			}
+			h5{
+				font-size: 16px;
+				font-weight: bold;
+				color: #333333;
+				margin: 4px;
+			}
+			#txt{
+				position: absolute;
+				z-index: 1000;
+				right:270px;
+				font-weight: 300;
+				top: 20px;
+			}
+			.text1{
+				right:200px;
+				margin-top: 12px;
+				margin-bottom: 15px;
+				margin-left: 10px;
+
+			}
+			.text2{
+				margin-left: 25px;
+				margin-top:16px;
+				margin-bottom: 15px;
+			}
+			.text3{
+				margin-left: 25px;
+				margin-top: 16px;
+				margin-bottom: 15px;
+			}
+			.text4{
+				margin-left: 45px;
+				margin-top: 17px;
+				margin-bottom: 15px;
+			}
+			#bar_neutral{
+				font-size: 14px;
+				font-weight: bold;
+				color: white;
+				
+			}
+			#bar_angry{
+				font-size: 14px;
+				font-weight: bold;
+				color: white;
+				
+			}
+			#bar_sad{
+				font-size: 14px;
+				font-weight: bold;
+				color: white;
+				
+			}
+			#bar_happy{
+				font-size: 14px;
+				font-weight: bold;
+				color: white;
+				
+			}
+			.move{
+				position: absolute;
+				right: 200px;
+				bottom: 250px;
+				z-index: 1001;
+
+			}
+			#ing{
+				color: white;
+				font-weight: 300;
+				animation: now 5s ;
+    			animation-fill-mode:forwards;
+			}
+			.icon{
+				position: absolute;
+				right: 100px;
+				bottom: 50px;
+				 width:80px;
+				
+				animation: moveToRight 5s ;
+        		animation-fill-mode:forwards;
+			}
+			@keyframes now{
+	0%{
+        
+        opacity: 1;
+    }
+    70%{
+       
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+@keyframes moveToRight{
+	0%{
+        right: 100px;
+		opacity: 1;
+    }
+    70%{
+        right: 50px;
+		opacity: 1;
+    }
+    100%{
+        right: 100px;
+		opacity: 0;
+    }
+}
+			
+		</style>
+	
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/p5.js"></script>
+    	<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.1/addons/p5.sound.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/gh/ml5js/Intro-ML-Arts-IMA@ml5-build-10-7-19/ml5_build/ml5.min.js"></script>
+	</head>
+	<body>
+		<div id="intro2">
+			<img src="./env/logo.png" class="logo">
+			<div id="t4">서비스의 일부 기능을 구현하여 직접 체험해 볼 수 있도록 만들어진 초기 프로토타입입니다.</div>
+			<div id="right2">→</div>
+		</div>
+		<div id="intro1">
+			<img src="./env/logo.png" class="logo">
+			<div id="t1">사회불안장애 내담자들은 <b>자신을 드러내는 것에 어려움</b>이 있어 상담치료를 망설이는 사람들이 많습니다.</div>
+			<div id="t2">저희 서비스에서는 <b>내담자들이 단계별로 자신의 실제 얼굴을 드러내는 노출 단계를 직접 선택</b>하고</div>
+			<div id="t3">상담에 참여하여 부담감과 두려움을 줄여줄 수 있도록 합니다.</div>
+			<div id="left">←</div>
+			<div id="right">→</div>
+		</div>
+		<div id="intro">
+			<img src="./env/logo.png" class="logo">
+			<div id ="info"><p>체험할 얼굴 노출 단계를 선택해주세요.</p>
+				<a>상담에 참여할 모습을 직접 선택해주세요. 선택하신 단계로 상담에 참여하게 됩니다.</a>
+			<h3>※ 0단계는 표정변화가 아바타에 반영됩니다.</h3></div>
+		<div id="butt">
+			<button id="btn_step0"><div class="step">노출0</div><h1>노출없음</h1>
+			<h2>아바타로 상담이 진행됩니다.</h2></button>
+			<button id="btn_step1"><div class="step1">노출1</div><h1>입 노출</h1>
+			<h2>내담자의 입이 노출됩니다.</h2></button>
+			<button id="btn_step2"><div class="step2">노출2</div><h1>코, 입 노출</h1>
+			<h2>내담자의 코와 입이 노출됩니다.</h2></button>
+			<button id="btn_step3"><div class="step3">노출3</div><h1>눈, 코, 입 노출</h1>
+			<h2>내담자의 전체 얼굴이 노출됩니다.</h2></button>
+		</div>
+		
+			<!-- <button id="btn_step1">1단계</button>
+			<button id="btn_step2">2단계</button>
+			<button id="btn_step3">3단계</button> -->
+		</div>
+		<div id="zero">
+		<div id="txt">
+				<div class ="text1">NORMAL</div>
+				<div class ="text2">HAPPY</div>
+				<div class ="text3">ANGRY</div>
+				<div class ="text4">SAD</div>
+			</div>
+			<div class="guidee">표정을 인식할 수 있도록<br>
+				얼굴을 가이드 화면에 맞춰주세요!</div>
+			<div class="guidee2"><h4>SPACE BAR: 노출단계 선택 페이지 / ENTER KEY: 메인페이지</h4>
+			<h5>체험을 끝내실 분들은 엔터키를 눌러주세요!</h5></div>
+
+		<div class="move">
+		<img src ="./env/drag-01.png" class="icon">
+		<div id="ing">
+			클릭 후 드래그하여 둘러보세요
+		</div>
+		</div>
+		</div>
+		<div id="graph">
+			<div class ="square">
+			<div id="bar_neutral" class="bar"></div>
+			<div id="bar_happy" class="bar2"></div>
+			<div id="bar_angry" class="bar3"></div>
+			<div id="bar_sad" class="bar4"></div>
+			</div>
+		</div>
+
+		
+
+		
+		<!-- <img id="if" src="env/interface.png"> -->
+
+		<script>
+			
+		</script>
+
+		<script type="importmap">
+			{
+				"imports": {
+					"three": 		"https://cdn.jsdelivr.net/npm/three@0.140.0/build/three.module.js",
+					"vrbutton": 	"https://cdn.jsdelivr.net/npm/three@0.140.0/examples/jsm/webxr/VRButton.js",
+					"xrcontroller":	"https://cdn.jsdelivr.net/npm/three@0.140.0/examples/jsm/webxr/XRControllerModelFactory.js",
+					"orbit": 		"https://cdn.jsdelivr.net/npm/three@0.140.0/examples/jsm/controls/OrbitControls.js"
+				}
+			}
+		</script>
+		<script type="module">
+			import * as THREE from 'three';
+			import { VRButton } from 'vrbutton';
+			import { XRControllerModelFactory } from 'xrcontroller';
+			import { OrbitControls } from 'orbit';
+
+			let camera, renderer, scene, controls;
+			let ctrl_1, ctrl_2, ctrl_grip_1, ctrl_grip_2;
+
+			let env;
+			let envFolder = './env'
+			let envFiles = []
+			let envTextures = [];
+			let envOrder = 0;
+
+			let webcam, canvas;
+			let videoTexture;
+			let videoMaterial;
+			let plane;
+			let face0, face1, face2;
+
+			window.setup = setup
+			window.draw = draw
+
+			let cam_width = 0.3;
+
+			// =================================================================
+			// 		Add your own panorama image with envFiles.push(filepath)
+			// =================================================================
+			envFiles.push('room2.png');
+			envFiles.push('new_example.png');
+
+			init();
+			setController();
+			animate();
+			setEnv(envOrder);
+
+
+			function init() {
+				renderer = new THREE.WebGLRenderer();
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth * (1-cam_width), window.innerHeight );
+				renderer.setClearColor( 0x333333 );
+				renderer.xr.enabled = true;
+				renderer.xr.setReferenceSpaceType( 'local' );
+				document.body.appendChild( renderer.domElement );
+				document.body.appendChild( VRButton.createButton( renderer ) );
+
+				scene = new THREE.Scene();
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth * (1-cam_width) / window.innerHeight, 1, 1000 );
+				camera.position.z = 0.001;
+
+                let sphere = new THREE.SphereGeometry( 100, 64, 32 );
+				sphere.scale( -1, 1, 1 );
+
+				for(let i in envFiles){
+					let texture = new THREE.TextureLoader().load( envFolder + '/' + envFiles[i] );
+					envTextures.push(texture);			
+				}
+				
+				let material = new THREE.MeshBasicMaterial( { map: envTextures[0] } );
+
+				env = new THREE.Mesh( sphere, material );
+				env.rotation.y = -Math.PI/2;
+				scene.add( env );
+
+			
+
+
+				// 눈
+				// let geometry = new THREE.PlaneGeometry( 10, 10 );
+				// let texture2 = new THREE.TextureLoader().load( envFolder + '/eye.png');
+				
+				
+				// let material2 = new THREE.MeshBasicMaterial( {map: texture2, transparent: true} );
+				// let plane = new THREE.Mesh( geometry, material2 );
+				// plane.position.z = -32
+				// plane.position.y = -4.8
+				// plane.position.x = -1
+
+
+
+				//눈,코
+				// let geometry = new THREE.PlaneGeometry( 10, 10 );
+				// let texture2 = new THREE.TextureLoader().load( envFolder + '/eyenose.png');
+				
+				
+				// let material2 = new THREE.MeshBasicMaterial( {map: texture2, transparent: true} );
+				// let plane = new THREE.Mesh( geometry, material2 );
+				// plane.position.z = -32
+				// plane.position.y = -4.8
+				// plane.position.x = -1
+
+
+
+				//전체얼굴
+				let geometry = new THREE.CircleGeometry( 4.8, 32);
+				let texture2 = new THREE.TextureLoader().load( envFolder + '/avatarface1.png');
+
+				// let material2 = new THREE.MeshBasicMaterial( {map: texture2, transparent: true} );
+				videoMaterial = new THREE.MeshBasicMaterial( {map: texture2, transparent: true} );
+
+				plane = new THREE.Mesh( geometry, videoMaterial );
+				plane.position.z = -37
+				plane.position.y = 6.6
+				plane.position.x = -6
+				plane.scale.x = 0.85;
+				plane.scale.y = 1.2;
+
+				scene.add( plane );
+
+				// 전체가리기
+				let geo_mask = new THREE.PlaneGeometry( 15, 15 ); // 표정 평면
+
+				let tex0 = new THREE.TextureLoader().load( envFolder + '/avatarface1.png');
+
+				// let mat0 = new THREE.MeshBasicMaterial( {color: 0xff0000, transparent: true} );
+				let mat0 = new THREE.MeshBasicMaterial( {map: tex0, transparent: true} );
+				face0 = new THREE.Mesh( geo_mask, mat0 );
+				face0.position.z = -36
+				face0.position.y = 6.3
+				face0.position.x = -5.7
+				face0.scale.x = 0.72;
+				scene.add( face0 );
+
+				face0.visible = false;
+
+				// 눈코
+				let tex1 = new THREE.TextureLoader().load( envFolder + '/eyenose.png');
+				let mat1 = new THREE.MeshBasicMaterial( {map: tex1, transparent: true} );
+				face1 = new THREE.Mesh( geo_mask, mat1 );
+				face1.position.z = -36
+				face1.position.y = 6.3
+				face1.position.x = -6
+				face1.scale.x = 0.76;
+				scene.add( face1 );
+
+				face1.visible = false;
+
+				// 눈만
+				let tex2 = new THREE.TextureLoader().load( envFolder + '/eye.png');
+				let mat2 = new THREE.MeshBasicMaterial( {map: tex2, transparent: true} );
+				face2 = new THREE.Mesh( geo_mask, mat2 );
+				face2.position.z = -36
+				face2.position.y = 6.3
+				face2.position.x = -5.8
+				face2.scale.x = 0.72;
+				scene.add( face2 );
+
+				face2.visible = false;
+
+
+
+				controls = new OrbitControls( camera, renderer.domElement );
+				controls.enablePan = false;
+				controls.enableZoom = false;
+
+				window.addEventListener( 'resize', onWindowResize );
+			}
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth * (1-cam_width) / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth * (1-cam_width) , window.innerHeight );
+			}
+
+			function animate() {
+				renderer.setAnimationLoop( render );
+			}
+
+			function render() {
+				renderer.render( scene, camera );
+				controls.update();
+				getFace();
+			}
+
+			function setController(){
+				ctrl_1 = renderer.xr.getController( 0 );
+				ctrl_1.addEventListener( 'selectstart', onSelectStart );
+				ctrl_1.addEventListener( 'selectend', onSelectEnd );
+				ctrl_1.addEventListener( 'connected', function ( event ) {
+					this.add( buildController( event.data ) );
+				} );
+				ctrl_1.addEventListener( 'disconnected', function () {
+					this.remove( this.children[ 0 ] );
+				} );
+				scene.add( ctrl_1 );
+
+				ctrl_2 = renderer.xr.getController( 1 );
+				ctrl_2.addEventListener( 'selectstart', onSelectStart );
+				ctrl_2.addEventListener( 'selectend', onSelectEnd );
+				ctrl_2.addEventListener( 'connected', function ( event ) {
+					this.add( buildController( event.data ) );
+				} );
+				ctrl_2.addEventListener( 'disconnected', function () {
+					this.remove( this.children[ 0 ] );
+				} );
+				scene.add( ctrl_2 );
+
+				// The XRControllerModelFactory will automatically fetch controller models
+				// that match what the user is holding as closely as possible. The models
+				// should be attached to the object returned from getControllerGrip in
+				// order to match the orientation of the held device.
+
+				const controllerModelFactory = new XRControllerModelFactory();
+
+				ctrl_grip_1 = renderer.xr.getControllerGrip( 0 );
+				ctrl_grip_1.add( controllerModelFactory.createControllerModel( ctrl_grip_1 ) );
+				scene.add( ctrl_grip_1 );
+
+				ctrl_grip_2 = renderer.xr.getControllerGrip( 1 );
+				ctrl_grip_2.add( controllerModelFactory.createControllerModel( ctrl_grip_2 ) );
+				scene.add( ctrl_grip_2 );
+
+			}
+
+			function buildController( data ) {
+				let geometry, material;
+
+				switch ( data.targetRayMode ) {
+					case 'tracked-pointer':
+						geometry = new THREE.BufferGeometry();
+						geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( [ 0, 0, 0, 0, 0, - 1 ], 3 ) );
+						geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( [ 0.5, 0.5, 0.5, 0, 0, 0 ], 3 ) );
+
+						material = new THREE.LineBasicMaterial( { vertexColors: true, blending: THREE.AdditiveBlending } );
+
+						return new THREE.Line( geometry, material );
+
+					case 'gaze':
+						geometry = new THREE.RingGeometry( 0.02, 0.04, 32 ).translate( 0, 0, - 1 );
+						material = new THREE.MeshBasicMaterial( { opacity: 0.5, transparent: true } );
+						return new THREE.Mesh( geometry, material );
+				}
+
+			}
+
+			function onSelectStart(e) { }
+
+			function onSelectEnd(e) {
+				if(e.data.handedness == "left"){
+					envOrder--;
+					if(envOrder < 0) envOrder = envTextures.length - 1;
+					setEnv(envOrder);
+				}if(e.data.handedness == "right"){
+					envOrder++;
+					if(envOrder > envTextures.length - 1) envOrder = 0;
+					setEnv(envOrder);
+				}
+			}
+
+			$(window).keydown(function(e) {
+				if(e.keyCode == 37){
+					envOrder--;
+					if(envOrder < 0) envOrder = envTextures.length - 1;
+					setEnv(envOrder);
+				}if(e.keyCode == 39){
+					envOrder++;
+					if(envOrder > envTextures.length - 1) envOrder = 0;
+					setEnv(envOrder);
+				}
+			})
+
+			function setEnv(num){
+				env.material.map = envTextures[num];
+			}
+
+
+			// ========== p5.js =================
+			let diameter = 200;
+			let guideImg;
+
+			let faceapi;
+			let detections = [];
+
+
+			function setup(){
+				createCanvas(windowWidth*cam_width, windowHeight);
+				webcam = createCapture(VIDEO)
+				webcam.size(800, 600)
+				webcam.hide();
+
+				canvas = createGraphics(diameter, diameter)
+
+				guideImg = loadImage('./env/guide.png')
+
+				const faceOptions = {
+					withLandmarks: true,
+					withExpressions: true,
+					withDescriptors: true,
+					minConfidence: 0.5
+				};
+
+				faceapi = ml5.faceApi(webcam, faceOptions, faceReady);
+			}
+
+			function faceReady() {
+				faceapi.detect(gotFaces);// Start detecting faces: 顔認識開始
+			}
+
+			function draw(){
+				// 왼쪽에 보이는 부분
+				background('white')
+				translate(width/2, height/2 - 120); // height값 조절
+				scale(-1, 1);
+				scale(1.2);
+				imageMode(CENTER)
+				// tint(172, 136, 102, 230) // rgba
+				image(webcam, 0, 0) // 웹캠화면
+				image(guideImg, 0, 0, 300, 300)
+				imageMode(CORNER)
+
+			
+				noFill();
+				stroke('red')
+				// circle(0, 0, diameter);
+
+				// 잘리는 부분
+				canvas.push()
+				// canvas.tint(172, 136, 102, 230) // rgba
+				canvas.translate(diameter/2, diameter/2)
+				canvas.scale(-1, 1)
+				canvas.imageMode(CENTER)
+				canvas.image(webcam, 0, 0)
+				canvas.imageMode(CORNER)
+
+				for(let i = 0; i < 10; i++){
+					let opa = map(i, 0, 10, 255, 0) // rgba
+					canvas.noFill();
+					canvas.stroke(172, 136, 102, opa)
+					canvas.circle(0, 0, diameter - i*2)
+				}
+				canvas.pop()
+
+			}
+
+			function getFace(){
+				if(canvas != null){
+					videoTexture = new THREE.CanvasTexture( canvas.canvas );
+					plane.material.map = videoTexture
+					videoTexture.needsUpdate = true;
+				}
+			}
+
+
+			function gotFaces(error, result) {
+				if (error) {
+					console.log(error);
+					return;
+				}
+
+				detections = result;
+				console.log(detections);
+
+				drawExpressions(detections, 20, 250, 14);
+
+				faceapi.detect(gotFaces);
+			}
+
+			
+			
+			function drawExpressions(detections, x, y, textYSpace){
+
+				if(detections.length > 0){
+					let {neutral, happy, angry, sad, disgusted, surprised, fearful} = detections[0].expressions;
+
+					console.log("happy" + parseInt(happy * 100) );
+					console.log("angry" + parseInt(angry * 100));
+					console.log("sad" + parseInt(sad * 100));
+					console.log("neutral" + parseInt(neutral * 100));
+
+					$('#bar_neutral').css('width', parseInt(neutral * 220) )
+					$('#bar_neutral').text(parseInt(neutral * 100) + '%' )
+
+					$('#bar_happy').css('width', parseInt(happy * 220) )
+					$('#bar_happy').text(parseInt(happy * 100) + '%' )
+
+					$('#bar_angry').css('width', parseInt(angry * 220) )
+					$('#bar_angry').text(parseInt(angry * 100) + '%' )
+
+					$('#bar_sad').css('width', parseInt(sad * 220) )
+					$('#bar_sad').text(parseInt(sad * 100) + '%' )
+
+				
+					
+					// 여기가 감정이 인식되었을 때 부분
+
+					
+					// happy = new THREE.Mesh( geo_mask, mat0 );
+					
+
+					
+
+					if(happy > 0.5){
+						face0.material.map = new THREE.TextureLoader().load( envFolder + '/happyface.png');
+					}
+					else if(angry > 0.5){
+						face0.material.map = new THREE.TextureLoader().load( envFolder + '/angryface.png');
+					}
+					else if(sad > 0.5){
+						face0.material.map = new THREE.TextureLoader().load( envFolder + '/sadface.png');
+					}
+					else{
+						face0.material.map = new THREE.TextureLoader().load( envFolder + '/avatarface.png');
+					}
+
+				}else{
+				}
+			}
+
+
+			// Button interaction
+			
+			$('#right2').click(function(){
+				$('#intro2').fadeOut(700)
+				$('#intro1').fadeIn(700)
+				
+			})
+			$('#right').click(function(){
+				$('#intro1').fadeOut(700)
+				$('#intro').fadeIn(700)
+			})
+			$('#left').click(function(){
+				$('#intro2').fadeIn(700)
+				$('#intro1').fadeOut(700)
+			})
+			
+			$('#btn_step0').click(function(){
+				$('#intro').fadeOut(700)
+
+				face0.visible = true;
+				face1.visible = false;
+				face2.visible = false;
+				$('#graph').show(700);
+				$('#zero').show(700);
+				$('#txt').show(700);
+			})
+			$('#btn_step1').click(function(){
+				$('#intro').fadeOut(700)
+
+				face0.visible = false;
+				face1.visible = true;
+				face2.visible = false;
+				$('#graph').hide();
+				$('#zero').show(700);
+				$('#txt').hide(700);
+			})
+			$('#btn_step2').click(function(){
+				$('#intro').fadeOut(700)
+
+				face0.visible = false;
+				face1.visible = false;
+				face2.visible = true;
+				$('#graph').hide();
+				$('#zero').show(700);
+				$('#txt').hide(700);
+			})
+			$('#btn_step3').click(function(){
+				$('#intro').fadeOut(700)
+
+				face0.visible = false;
+				face1.visible = false;
+				face2.visible = false;
+				$('#graph').hide();
+				$('#zero').show(700);
+				$('#txt').hide(700);
+			})
+
+			// 테스트용 키보드
+			$(window).keypress(function(){
+				$('#intro').fadeIn(500)
+
+				face0.visible = false;
+				face1.visible = false;
+				face2.visible = false;
+				$('#zero').hide(700);
+			})
+
+			$(document).keydown(function(event) {
+
+			if (event.keyCode == '13') {
+				$('#intro').fadeIn(700);
+				$('#intro2').fadeIn(700);
+				$('#intro0').fadeIn(700);
+
+			}})
+			
+			
+		</script>
+		
+	</body>
+</html>
